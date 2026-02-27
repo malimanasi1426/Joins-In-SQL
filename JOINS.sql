@@ -1,0 +1,103 @@
+CREATE DATABASE EMPLOYEE;
+USE EMPLOYEE;
+CREATE TABLE DEPARTMENTS
+(DEP_ID INT PRIMARY KEY,
+DEP_NAME VARCHAR (50),
+LOCATION_ID INT);
+INSERT INTO DEPARTMENTS 
+(DEP_ID, DEP_NAME, LOCATION_ID)
+VALUES
+(10, 'HR', 1),
+(20, 'IT', 2),
+(30, 'Finance', 3),
+(40, 'Marketing', 2),
+(50, 'Admin', NULL);
+SELECT* FROM DEPARTMENTS;
+ALTER TABLE DEPARTMENTS
+CHANGE DEP_ID DEPTID INT;
+
+ALTER TABLE DEPARTMENTS
+CHANGE DEP_NAME DEPNAME VARCHAR(50);
+
+ALTER TABLE DEPARTMENTS
+CHANGE LOCATIONID LOC_ID INT;
+
+CREATE TABLE LOCATION
+(LOC_ID INT PRIMARY KEY,
+CITY VARCHAR (50));
+INSERT INTO LOCATION 
+(LOC_ID, CITY)
+VALUES
+(1, 'Pune'),
+(2, 'Bangalore'),
+(3, 'Mumbai'),
+(4, 'Delhi');
+SELECT* FROM LOCATION;
+
+CREATE TABLE EMP_DETAILS
+(EmpID INT PRIMARY KEY,
+EmpName VARCHAR(50),
+DeptID INT,
+Salary INT,
+ManagerID INT);
+INSERT INTO EMP_DETAILS
+VALUES
+(1, 'Amit', 20, 80000, NULL),
+(2, 'Neha', 20, 60000, 1),
+(3, 'Rahul', 10, 50000, 1),
+(4, 'Pooja', 30, 70000, 1),
+(5, 'Karan', 10, 45000, 3),
+(6, 'Sneha', NULL, 40000, 1),
+(7, 'Vikas', 40, 55000, 2),
+(8, 'Anita', 30, 65000, 4);
+SELECT* FROM EMP_DETAILS;
+
+-- BASIC LEVEL (Warm-up)
+-- Display employee name and department name
+SELECT EMPNAME, DEPNAME
+FROM EMP_DETAILS E
+JOIN DEPARTMENTS D
+ON E.DEPTID = D.DEPTID;
+
+-- Display all employees even if they are not assigned to any department
+SELECT E.EMPID, E.EMPNAME, D.DEPNAME
+FROM EMP_DETAILS E
+LEFT JOIN DEPARTMENTS D
+ON E.DEPTID = D.DEPTID;
+
+-- Display all departments even if no employee works there
+SELECT E.EMPNAME, D.DEPNAME
+FROM EMP_DETAILS E 
+RIGHT JOIN DEPARTMENTS D
+ON E.DEPTID = D.DEPTID;
+
+-- Show employees working in HR department only
+SELECT E.EMPNAME, D.DEPNAME
+FROM EMP_DETAILS E 
+JOIN DEPARTMENTS D
+ON E.DEPTID = D.DEPTID
+WHERE D.DEPNAME= 'HR';
+
+-- Display employees whose department is located in Pune
+SELECT E.EMPNAME, D.DEPNAME, L.CITY
+FROM EMP_DETAILS E 
+JOIN DEPARTMENTS D
+ON E.DEPTID = D.DEPTID
+JOIN LOCATION L 
+ON D.LOC_ID = L.LOC_ID
+WHERE L.CITY= 'PUNE';
+
+-- INTERMEDIATE LEVEL 
+-- Display department-wise total salary
+SELECT D.DEPNAME, SUM(E.SALARY) AS TOTAL_SALARY
+FROM EMP_DETAILS E
+JOIN DEPARTMENTS D
+ON E.DEPTID = D.DEPTID
+GROUP BY D.DEPNAME;
+-- Display department-wise employee count
+
+-- Display employees who do not belong to any department
+
+-- Display departments having no employees
+
+-- Display employees earning more than their department’s average salary
